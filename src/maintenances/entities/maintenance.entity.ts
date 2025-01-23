@@ -1,6 +1,6 @@
 import { Contact } from 'src/contacts/entities/contact.entity';
 import { Property } from 'src/properties/entities/property.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export enum RequestType {
   BASIC = 'Basic',
@@ -100,12 +100,19 @@ export class Maintenance {
   @Column('text')
   details: string;
 
+  @Column({ type: 'timestamp' })
+  available_datetime: Date;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  // Relations
   @ManyToOne(() => Property, (property) => property.maintenances)
   property: Property;
 
   @ManyToOne(() => Contact, (contact) => contact.maintenances)
   tenant: Contact;
-
-  @Column({ type: 'timestamp' })
-  available_datetime: Date;
 }

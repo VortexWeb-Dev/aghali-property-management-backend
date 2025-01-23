@@ -1,6 +1,13 @@
 import { Accounting } from 'src/accountings/entities/accounting.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('contacts')
 export class Contact {
@@ -18,6 +25,12 @@ export class Contact {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   // Relations
   @OneToMany(() => Maintenance, (maintenance) => maintenance.tenant)
