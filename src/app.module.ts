@@ -8,6 +8,7 @@ import { ContactsModule } from './contacts/contacts.module';
 import { MaintenancesModule } from './maintenances/maintenances.module';
 import { AccountingsModule } from './accountings/accountings.module';
 import { ListingsModule } from './listings/listings.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ListingsModule } from './listings/listings.module';
     MaintenancesModule,
     AccountingsModule,
     ListingsModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
