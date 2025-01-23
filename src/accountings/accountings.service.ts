@@ -2,6 +2,8 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateAccountingDto } from './dto/create-accounting.dto';
 import { UpdateAccountingDto } from './dto/update-accounting.dto';
@@ -22,7 +24,23 @@ export class AccountingsService {
       const accounting = this.accountingRepository.create(createAccountingDto);
       return await this.accountingRepository.save(accounting);
     } catch (error) {
-      throw new BadRequestException('Failed to create accounting record');
+      if (error.code === '23503') {
+        throw new BadRequestException(
+          'Invalid foreign key. The related record does not exist.',
+        );
+      } else if (error.code === '23505') {
+        throw new ConflictException(
+          'Duplicate record. A record with the same unique constraints already exists.',
+        );
+      } else if (error.message.includes('foreign key constraint')) {
+        throw new BadRequestException(
+          'Invalid foreign key. The related record does not exist.',
+        );
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to create accounting record.',
+        );
+      }
     }
   }
 
