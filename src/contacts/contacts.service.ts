@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Contact } from './entities/contact.entity';
@@ -12,24 +16,57 @@ export class ContactsService {
     private readonly contactRepository: Repository<Contact>,
   ) {}
 
-  create(createContactDto: CreateContactDto) {
-    const contact = this.contactRepository.create(createContactDto);
-    return this.contactRepository.save(contact);
+  // Create a new contact
+  async create(createContactDto: CreateContactDto) {
+    try {
+      const contact = this.contactRepository.create(createContactDto);
+      return await this.contactRepository.save(contact);
+    } catch (error) {
+      throw new BadRequestException('Failed to create contact');
+    }
   }
 
-  findAll() {
-    return this.contactRepository.find();
+  // Get all contacts
+  async findAll() {
+    try {
+      return await this.contactRepository.find();
+    } catch (error) {
+      throw new BadRequestException('Failed to fetch contacts');
+    }
   }
 
-  findOne(id: number) {
-    return this.contactRepository.findOneBy({ id });
+  // Get a single contact by ID
+  async findOne(id: number) {
+    const contact = await this.contactRepository.findOne({ where: { id } });
+
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} not found`);
+    }
+
+    return contact;
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return this.contactRepository.update(id, updateContactDto);
+  // Update an existing contact
+  async update(id: number, updateContactDto: UpdateContactDto) {
+    const contact = await this.findOne(id);
+
+    try {
+      await this.contactRepository.update(id, updateContactDto);
+      return { ...contact, ...updateContactDto }; // Return the updated record
+    } catch (error) {
+      throw new BadRequestException('Failed to update contact');
+    }
   }
 
-  remove(id: number) {
-    return this.contactRepository.delete(id);
+  // Remove a contact by ID
+  async remove(id: number) {
+    const contact = await this.findOne(id);
+
+    try {
+      await this.contactRepository.delete(id);
+      return { message: `Contact with ID ${id} successfully deleted` };
+    } catch (error) {
+      throw new BadRequestException('Failed to delete contact');
+    }
   }
 }

@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { Property } from 'src/properties/entities/property.entity';
 import { Contact } from 'src/contacts/entities/contact.entity';
 
@@ -24,7 +32,7 @@ export class Listing {
   @Column('text')
   title: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string;
 
   @Column({
@@ -41,13 +49,13 @@ export class Listing {
   })
   listingStatus: ListingStatus;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   availableFrom: Date;
 
   @Column('date')
   listingDate: Date;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   expiryDate: Date;
 
   @CreateDateColumn()
@@ -56,10 +64,19 @@ export class Listing {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @DeleteDateColumn({ nullable: true })
+  deleted_at: Date;
+
   // Relations
-  @ManyToOne(() => Property, (property) => property.id)
+  @ManyToOne(() => Property, (property) => property.listings, {
+    eager: true,
+    nullable: false,
+  })
   property: Property;
 
-  @ManyToOne(() => Contact, (contact) => contact.id)
+  @ManyToOne(() => Contact, (contact) => contact.listings, {
+    eager: true,
+    nullable: false,
+  })
   listedBy: Contact;
 }

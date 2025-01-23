@@ -1,4 +1,5 @@
 import { Accounting } from 'src/accountings/entities/accounting.entity';
+import { Listing } from 'src/listings/entities/listing.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
@@ -118,4 +119,7 @@ export class Property {
 
   @OneToMany(() => Accounting, (accounting) => accounting.property)
   accountings: Accounting[];
+
+  @OneToMany(() => Listing, (listing) => listing.property)
+  listings: Listing[];
 }

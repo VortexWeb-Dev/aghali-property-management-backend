@@ -1,4 +1,5 @@
 import { Accounting } from 'src/accountings/entities/accounting.entity';
+import { Listing } from 'src/listings/entities/listing.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
 import {
   Entity,
@@ -38,4 +39,7 @@ export class Contact {
 
   @OneToMany(() => Accounting, (accounting) => accounting.tenant)
   accountings: Accounting[];
+
+  @OneToMany(() => Listing, (listing) => listing.listedBy)
+  listings: Listing[];
 }

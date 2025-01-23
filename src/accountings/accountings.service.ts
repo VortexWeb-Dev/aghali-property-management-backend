@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateAccountingDto } from './dto/create-accounting.dto';
 import { UpdateAccountingDto } from './dto/update-accounting.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,24 +16,64 @@ export class AccountingsService {
     private readonly accountingRepository: Repository<Accounting>,
   ) {}
 
-  create(createAccountingDto: CreateAccountingDto) {
-    const accounting = this.accountingRepository.create(createAccountingDto);
-    return this.accountingRepository.save(accounting);
+  // Create a new accounting record
+  async create(createAccountingDto: CreateAccountingDto) {
+    try {
+      const accounting = this.accountingRepository.create(createAccountingDto);
+      return await this.accountingRepository.save(accounting);
+    } catch (error) {
+      throw new BadRequestException('Failed to create accounting record');
+    }
   }
 
-  findAll() {
-    return this.accountingRepository.find();
+  // Find all accounting records
+  async findAll() {
+    try {
+      return await this.accountingRepository.find({
+        relations: ['property', 'tenant'],
+      });
+    } catch (error) {
+      throw new BadRequestException('Failed to fetch accounting records');
+    }
   }
 
-  findOne(id: number) {
-    return this.accountingRepository.findOne({ where: { id }, relations: ['property', 'tenant'] });
+  // Find a single accounting record by ID
+  async findOne(id: number) {
+    const accounting = await this.accountingRepository.findOne({
+      where: { id },
+      relations: ['property', 'tenant'],
+    });
+
+    if (!accounting) {
+      throw new NotFoundException(`Accounting record with ID ${id} not found`);
+    }
+
+    return accounting;
   }
 
-  update(id: number, updateAccountingDto: UpdateAccountingDto) {
-    return this.accountingRepository.update(id, updateAccountingDto);
+  // Update an accounting record by ID
+  async update(id: number, updateAccountingDto: UpdateAccountingDto) {
+    const accounting = await this.findOne(id);
+
+    try {
+      await this.accountingRepository.update(id, updateAccountingDto);
+      return { ...accounting, ...updateAccountingDto }; // Return the updated record
+    } catch (error) {
+      throw new BadRequestException('Failed to update accounting record');
+    }
   }
 
-  remove(id: number) {
-    return this.accountingRepository.delete(id);
+  // Delete an accounting record by ID
+  async remove(id: number) {
+    const accounting = await this.findOne(id);
+
+    try {
+      await this.accountingRepository.delete(id);
+      return {
+        message: `Accounting record with ID ${id} successfully deleted`,
+      };
+    } catch (error) {
+      throw new BadRequestException('Failed to delete accounting record');
+    }
   }
 }
