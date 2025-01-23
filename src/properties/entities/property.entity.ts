@@ -1,3 +1,4 @@
+import { Accounting } from 'src/accountings/entities/accounting.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -108,4 +109,7 @@ export class Property {
   // Relations
   @OneToMany(() => Maintenance, (maintenance) => maintenance.property)
   maintenances: Maintenance[];
+
+  @OneToMany(() => Accounting, (accounting) => accounting.property)
+  accountings: Accounting[];
 }

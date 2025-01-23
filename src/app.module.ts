@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PropertiesModule } from './properties/properties.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { MaintenancesModule } from './maintenances/maintenances.module';
+import { AccountingsModule } from './accountings/accountings.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MaintenancesModule } from './maintenances/maintenances.module';
     PropertiesModule,
     ContactsModule,
     MaintenancesModule,
+    AccountingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

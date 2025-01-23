@@ -1,3 +1,4 @@
+import { Accounting } from 'src/accountings/entities/accounting.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
@@ -21,4 +22,7 @@ export class Contact {
   // Relations
   @OneToMany(() => Maintenance, (maintenance) => maintenance.tenant)
   maintenances: Maintenance[];
+
+  @OneToMany(() => Accounting, (accounting) => accounting.tenant)
+  accountings: Accounting[];
 }
