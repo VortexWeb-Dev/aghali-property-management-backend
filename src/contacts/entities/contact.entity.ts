@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('contacts')
 export class Contact {
@@ -16,4 +17,8 @@ export class Contact {
 
   @Column({ nullable: true })
   avatar: string;
+
+  // Relations
+  @OneToMany(() => Maintenance, (maintenance) => maintenance.tenant)
+  maintenances: Maintenance[];
 }

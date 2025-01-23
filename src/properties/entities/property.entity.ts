@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 export enum PropertyType {
   SINGLE_UNIT = 'Single Unit',
@@ -103,4 +104,8 @@ export class Property {
 
   @Column({ type: 'simple-array', nullable: true })
   attachments: string[];
+
+  // Relations
+  @OneToMany(() => Maintenance, (maintenance) => maintenance.property)
+  maintenances: Maintenance[];
 }
