@@ -6,6 +6,7 @@ import { Property } from './entities/property.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Property])],
+  exports: [TypeOrmModule],
   controllers: [PropertiesController],
   providers: [PropertiesService],
 })
