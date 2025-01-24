@@ -13,7 +13,10 @@ export class FilesController {
       throw new Error('Both "key" and "contentType" are required.');
     }
 
-    const presignedUrl = await this.s3Service.generatePresignedUrl(key, contentType);
+    const presignedUrl = await this.s3Service.generatePresignedUrl({
+      key,
+      contentType,
+    });
 
     return { presignedUrl };
   }

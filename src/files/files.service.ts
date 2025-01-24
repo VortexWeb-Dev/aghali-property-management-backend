@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Body } from '@nestjs/common';
 import {
   S3Client,
   PutObjectCommand,
@@ -22,9 +22,14 @@ export class FilesService {
   }
 
   async generatePresignedUrl(
-    key: string,
-    contentType: string,
-  ): Promise<string> {
+    @Body() body: { key: string; contentType: string },
+  ): Promise<{ presignedUrl: string }> {
+    const { key, contentType } = body;
+
+    if (!key || !contentType) {
+      throw new Error('Both "key" and "contentType" are required.');
+    }
+
     const params: PutObjectCommandInput = {
       Bucket: this.bucketName,
       Key: key,
@@ -32,6 +37,9 @@ export class FilesService {
     };
 
     const command = new PutObjectCommand(params);
-    return getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+
+    const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+
+    return { presignedUrl: url };
   }
 }
