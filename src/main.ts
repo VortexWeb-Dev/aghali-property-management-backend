@@ -6,7 +6,17 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'http://localhost',
+      'http://vortexwebpropertymanagement.com',
+      'https://vortexwebpropertymanagement.com',
+      'http://3.110.171.244',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
