@@ -5,7 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const corsOptions = {
-    origin: ['http://localhost', 'http://3.110.171.244'],
+    origin: ['http://localhost', 'http://3.110.171.244', 'https://vortexwebpropertymanagement.com/'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   };
