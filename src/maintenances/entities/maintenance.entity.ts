@@ -1,6 +1,13 @@
 import { Contact } from 'src/contacts/entities/contact.entity';
 import { Property } from 'src/properties/entities/property.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export enum RequestType {
   BASIC = 'Basic',
@@ -74,6 +81,18 @@ export enum SubIssue {
   CLOGGED_DRAIN = 'Clogged Drain',
 }
 
+export enum Stage {
+  NEW = 'New',
+  UPDATED = 'Updated',
+  PENDING = 'Pending',
+}
+
+export enum Status {
+  NORMAL = 'Normal',
+  MODERATE = 'Moderate',
+  CRITICAL = 'Critical',
+}
+
 @Entity('maintenance')
 export class Maintenance {
   @PrimaryGeneratedColumn()
@@ -93,6 +112,12 @@ export class Maintenance {
 
   @Column({ type: 'enum', enum: SubIssue })
   sub_issue: SubIssue;
+
+  @Column({ type: 'enum', enum: Stage })
+  stage: Stage;
+
+  @Column({ type: 'enum', enum: Status })
+  status: Status;
 
   @Column()
   title: string;

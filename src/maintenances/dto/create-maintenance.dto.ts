@@ -5,6 +5,8 @@ import {
   SubCategory,
   Issue,
   SubIssue,
+  Stage, 
+  Status
 } from '../entities/maintenance.entity';
 
 export class CreateMaintenanceDto {
@@ -22,6 +24,12 @@ export class CreateMaintenanceDto {
 
   @IsEnum(SubIssue)
   sub_issue: SubIssue;
+
+  @IsEnum(Stage)
+  stage: Stage;
+
+  @IsEnum(Status)
+  status: Status;
 
   @IsNotEmpty()
   @IsString()
