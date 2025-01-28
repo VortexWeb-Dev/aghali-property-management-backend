@@ -70,6 +70,7 @@ export enum Issue {
   WINDOW_DAMAGE = 'Window Damage',
   LANDSCAPING_ISSUE = 'Landscaping Issue',
   PLUMBING_LEAK = 'Plumbing Leak',
+  OTHER = 'Other',
 }
 
 export enum SubIssue {
@@ -79,6 +80,7 @@ export enum SubIssue {
   BROKEN_DOOR = 'Broken Door',
   POOL_MAINTENANCE = 'Pool Maintenance',
   CLOGGED_DRAIN = 'Clogged Drain',
+  OTHER = 'Other'
 }
 
 export enum Stage {
