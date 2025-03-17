@@ -49,14 +49,17 @@ export class ListingsService {
 
   // Get all listings (with optional filtering, pagination, and sorting)
   async findAll(page: number = 1, limit: number = 10, status?: string) {
-    const query = this.listingRepository.createQueryBuilder('listing');
+    const query = this.listingRepository
+      .createQueryBuilder('listing')
+      .leftJoinAndSelect('listing.property', 'property')
+      .leftJoinAndSelect('listing.listedBy', 'listedBy');
 
     if (status) {
       query.andWhere('listing.listingStatus = :status', { status });
     }
 
     query.skip((page - 1) * limit).take(limit);
-    return query.getManyAndCount(); // Returns both listings and total count for pagination
+    return query.getManyAndCount();
   }
 
   // Get a single listing by ID
