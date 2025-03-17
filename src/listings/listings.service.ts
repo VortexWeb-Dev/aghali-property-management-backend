@@ -7,7 +7,7 @@ import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listing } from './entities/listing.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { Property } from 'src/properties/entities/property.entity';
 import { Contact } from 'src/contacts/entities/contact.entity';
 
@@ -49,17 +49,16 @@ export class ListingsService {
 
   // Get all listings (with optional filtering, pagination, and sorting)
   async findAll(page: number = 1, limit: number = 10, status?: string) {
-    const query = this.listingRepository
-      .createQueryBuilder('listing')
-      .leftJoinAndSelect('listing.property', 'property')
-      .leftJoinAndSelect('listing.listedBy', 'listedBy');
+    const whereCondition = status ? { listingStatus: status } : {};
 
-    if (status) {
-      query.andWhere('listing.listingStatus = :status', { status });
-    }
+    const [listings, count] = await this.listingRepository.findAndCount({
+      where: whereCondition as FindOptionsWhere<Listing>,
+      relations: ['property', 'listedBy'],
+      skip: (page - 1) * limit,
+      take: limit,
+    });
 
-    query.skip((page - 1) * limit).take(limit);
-    return query.getManyAndCount();
+    return { listings, count };
   }
 
   // Get a single listing by ID
