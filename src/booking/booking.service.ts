@@ -29,7 +29,12 @@ export class BookingsService {
 
   async findAll() {
     try {
-      const bookings = await this.bookingRepository.find();
+      const bookings = await this.bookingRepository
+        .createQueryBuilder('booking')
+        .leftJoinAndSelect('booking.property', 'property')
+        .leftJoinAndSelect('booking.tenant', 'tenant')
+        .getMany();
+
       if (!bookings.length) {
         this.logger.warn('No booking records found');
       }

@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,6 +21,9 @@ export class Booking {
   @Column({ type: 'timestamp' })
   end_date: Date;
 
+  @Column()
+  notes: string;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -28,8 +32,10 @@ export class Booking {
 
   // Relations
   @ManyToOne(() => Property, (property) => property.bookings)
+  @JoinColumn()
   property: Property;
 
   @ManyToOne(() => Contact, (contact) => contact.bookings)
+  @JoinColumn()
   tenant: Contact;
 }
