@@ -1,4 +1,5 @@
 import { Accounting } from 'src/accountings/entities/accounting.entity';
+import { Booking } from 'src/booking/entities/booking.entity';
 import { Listing } from 'src/listings/entities/listing.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
 import {
@@ -36,6 +37,9 @@ export class Contact {
   // Relations
   @OneToMany(() => Maintenance, (maintenance) => maintenance.tenant)
   maintenances: Maintenance[];
+
+  @OneToMany(() => Booking, (booking) => booking.tenant)
+  bookings: Booking[];
 
   @OneToMany(() => Accounting, (accounting) => accounting.tenant)
   accountings: Accounting[];

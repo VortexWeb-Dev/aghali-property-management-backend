@@ -1,7 +1,15 @@
 import { Accounting } from 'src/accountings/entities/accounting.entity';
+import { Booking } from 'src/booking/entities/booking.entity';
 import { Listing } from 'src/listings/entities/listing.entity';
 import { Maintenance } from 'src/maintenances/entities/maintenance.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export enum PropertyType {
   SINGLE_UNIT = 'Single Unit',
@@ -116,6 +124,9 @@ export class Property {
   // Relations
   @OneToMany(() => Maintenance, (maintenance) => maintenance.property)
   maintenances: Maintenance[];
+
+  @OneToMany(() => Booking, (booking) => booking.property)
+  bookings: Booking[];
 
   @OneToMany(() => Accounting, (accounting) => accounting.property)
   accountings: Accounting[];

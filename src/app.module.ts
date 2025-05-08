@@ -9,6 +9,7 @@ import { MaintenancesModule } from './maintenances/maintenances.module';
 import { AccountingsModule } from './accountings/accountings.module';
 import { ListingsModule } from './listings/listings.module';
 import { FilesModule } from './files/files.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { FilesModule } from './files/files.module';
     AccountingsModule,
     ListingsModule,
     FilesModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
