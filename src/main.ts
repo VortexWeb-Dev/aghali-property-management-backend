@@ -11,6 +11,7 @@ async function bootstrap() {
       'http://localhost',
       'http://localhost:3000',
       'http://localhost:5173',
+      'https://aghali-property-management-13mc.vercel.app',
       'http://vortexwebpropertymanagement.com',
       'https://vortexwebpropertymanagement.com',
       'http://3.110.171.244',
