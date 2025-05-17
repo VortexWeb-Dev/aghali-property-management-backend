@@ -9,6 +9,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost',
+      'http://localhost:3000',
+      'http://localhost:5173',
       'http://vortexwebpropertymanagement.com',
       'https://vortexwebpropertymanagement.com',
       'http://3.110.171.244',
